@@ -33,6 +33,7 @@ import org.rahat.my_portfolio.theme.Navy
 import org.rahat.my_portfolio.theme.White
 import org.rahat.my_portfolio.theme.offWhite
 import org.rahat.my_portfolio.theme.textColor
+import org.rahat.my_portfolio.widget.ExperienceCard
 
 @Composable
 fun MainScreen() {
@@ -44,7 +45,7 @@ fun MainScreen() {
 
             LeftContainer(modifier = Modifier.weight(1f))
             Spacer(Modifier.weight(0.3f))
-            RightContainer(modifier = Modifier.weight(1f))
+            RightContainer(modifier = Modifier.weight(1.3f))
 
 
         }
@@ -79,11 +80,10 @@ fun RightContainer(modifier: Modifier) {
             Spacer(modifier = Modifier.height(12.sdp))
         }
 
-        items(35) {
-            Card(modifier = Modifier.padding(2.sdp), elevation = 4.sdp) {
-                Text(text = "Mobile Developer", color = White)
-                Text(text = "$it", color = White)
-            }
+        items(5) {
+            ExperienceCard()
+            Spacer(modifier = Modifier.height(8.sdp))
+
         }
 
 
