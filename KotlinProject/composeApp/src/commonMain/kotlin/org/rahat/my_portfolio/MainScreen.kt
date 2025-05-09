@@ -34,13 +34,14 @@ import org.rahat.my_portfolio.theme.White
 import org.rahat.my_portfolio.theme.offWhite
 import org.rahat.my_portfolio.theme.textColor
 import org.rahat.my_portfolio.widget.ExperienceCard
+import org.rahat.my_portfolio.widget.ProjectCard
 
 @Composable
 fun MainScreen() {
 
     Box(modifier = Modifier.fillMaxSize().background(Navy)) {
 
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth().padding(24.sdp)) {
 
 
             LeftContainer(modifier = Modifier.weight(1f))
@@ -71,7 +72,7 @@ fun RightContainer(modifier: Modifier) {
 
             Text(text = longText, color = textColor , style = TextStyle(
                 fontSize = 7.ssp ,
-                fontWeight = FontWeight.W500
+                fontWeight = FontWeight.W400,
             )
             )
         }
@@ -83,9 +84,17 @@ fun RightContainer(modifier: Modifier) {
         items(5) {
             ExperienceCard()
             Spacer(modifier = Modifier.height(8.sdp))
-
         }
 
+
+        item {
+            Spacer(modifier = Modifier.height(20.sdp))
+        }
+
+        items(5) {
+            ProjectCard()
+            Spacer(modifier = Modifier.height(8.sdp))
+        }
 
     }
 
@@ -95,6 +104,10 @@ fun RightContainer(modifier: Modifier) {
 fun LeftContainer(modifier: Modifier) {
 
     Column(modifier = modifier) {
+
+      //  Spacer(Modifier.weight(0.2f))
+
+
         Text(
             text = "Rahatul Aseaikin", color = offWhite, style = TextStyle(
                 fontSize = 18.ssp,
@@ -107,7 +120,7 @@ fun LeftContainer(modifier: Modifier) {
                 fontSize = 8.ssp,
                 fontWeight = FontWeight.W600
             ),
-            modifier = Modifier.padding(vertical = 10.sdp)
+            modifier = Modifier.padding(vertical = 6.sdp)
         )
 
         Text(
