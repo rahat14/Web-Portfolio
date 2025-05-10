@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Colors
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -57,6 +56,7 @@ import org.rahat.my_portfolio.theme.offWhite
 import org.rahat.my_portfolio.theme.textColor
 import org.rahat.my_portfolio.widget.ExperienceCard
 import org.rahat.my_portfolio.widget.ProjectCard
+import org.rahat.my_portfolio.widget.TypingText
 
 
 @Composable
@@ -67,8 +67,10 @@ fun MainScreen() {
     val firstVisibleItemIndex = scrollState.firstVisibleItemIndex
 
 
-
-    Box(modifier = Modifier.fillMaxSize().background(Navy)) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+            .background(Navy)
+    ) {
 
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 24.sdp)) {
 
@@ -82,7 +84,7 @@ fun MainScreen() {
 
                             if (scrollDelta != 0f) {
                                 scope.launch {
-                                    scrollState.animateScrollBy((scrollDelta * 350f))
+                                    scrollState.animateScrollBy((scrollDelta * 2f)) // 250f
                                 }
                             }
                         }
@@ -114,22 +116,23 @@ fun MainScreen() {
                 firstVisibleItemIndex
             )
 
-            Box(Modifier.fillMaxHeight()
-                .weight(0.3f)
-                .pointerInput(Unit) {
-                awaitPointerEventScope {
-                    while (true) {
-                        val event = awaitPointerEvent()
-                        val scrollDelta = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f
+            Box(
+                Modifier.fillMaxHeight()
+                    .weight(0.3f)
+                    .pointerInput(Unit) {
+                        awaitPointerEventScope {
+                            while (true) {
+                                val event = awaitPointerEvent()
+                                val scrollDelta = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f
 
-                        if (scrollDelta != 0f) {
-                            scope.launch {
-                                scrollState.animateScrollBy((scrollDelta * 350f))
+                                if (scrollDelta != 0f) {
+                                    scope.launch {
+                                        scrollState .animateScrollBy((scrollDelta * 2f)) // 250f
+                                    }
+                                }
                             }
                         }
                     }
-                }
-            }
             )
 
 
@@ -241,14 +244,18 @@ fun LeftContainer(
         Spacer(Modifier.weight(0.2f))
 
 
-        Text(
-            text = "Rahatul Aseaikin", color = offWhite, style = TextStyle(
+        TypingText(
+            fullText = "Rahatul Aseaikin",
+            style = TextStyle(
                 fontSize = 18.ssp,
                 fontWeight = FontWeight.SemiBold,
                 fontFamily = CalibreFontFamily(),
-                lineHeight = 0.ssp
+                lineHeight = 0.ssp,
+                color = offWhite,
             )
         )
+
+
 
         Text(
             text = "Mobile Application Developer", color = offWhite, style = TextStyle(
