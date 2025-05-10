@@ -60,7 +60,7 @@ fun ProjectCard(
                 contentDescription = " Icon",
                 modifier = Modifier
                     .padding(top = 2.sdp)
-                    .height(70.sdp).width(120.sdp)
+                    .height(50.sdp).width(80.sdp)
                     .clip(RoundedCornerShape(4.sdp)),
                 contentScale = ContentScale.Crop
             )
@@ -68,7 +68,7 @@ fun ProjectCard(
 
 
 
-            Spacer(modifier = Modifier.size(8.sdp))
+            Spacer(modifier = Modifier.size(4.sdp))
 
             Column(
             ) {
@@ -81,6 +81,7 @@ fun ProjectCard(
                     )
                 )
 
+             //   Spacer(modifier = Modifier.size(1.sdp))
 
                 Text(
                     details, style = TextStyle(

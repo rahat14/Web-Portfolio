@@ -1,5 +1,6 @@
 package org.rahat.my_portfolio
 
+import Section
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -15,11 +16,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.capitalize
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toUpperCase
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.facebook
 import kotlinproject.composeapp.generated.resources.github
@@ -28,7 +32,10 @@ import network.chaintech.sdpcomposemultiplatform.sdp
 import network.chaintech.sdpcomposemultiplatform.ssp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.rahat.my_portfolio.theme.CalibreFontFamily
+import org.rahat.my_portfolio.theme.InterFontFamily
 import org.rahat.my_portfolio.theme.Navy
+import org.rahat.my_portfolio.theme.SfMonoFontFamily
 import org.rahat.my_portfolio.theme.offWhite
 import org.rahat.my_portfolio.theme.textColor
 import org.rahat.my_portfolio.widget.ExperienceCard
@@ -39,7 +46,7 @@ fun MainScreen() {
 
     Box(modifier = Modifier.fillMaxSize().background(Navy)) {
 
-        Row(modifier = Modifier.fillMaxWidth().padding(24.sdp)) {
+        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 24.sdp)) {
 
 
             LeftContainer(modifier = Modifier.weight(1f))
@@ -58,9 +65,15 @@ fun MainScreen() {
 @Composable
 fun RightContainer(modifier: Modifier) {
 
+
     LazyColumn(modifier = modifier) {
 
         item {
+            Spacer(modifier = Modifier.size(28.sdp))
+        }
+
+        item {
+
 
             val longText =
                 "I’m a developer passionate about crafting accessible, pixel-perfect user interfaces that blend thoughtful design with robust engineering." +
@@ -102,44 +115,58 @@ fun RightContainer(modifier: Modifier) {
 @Composable
 fun LeftContainer(modifier: Modifier) {
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier,
+        horizontalAlignment = Alignment.Start) {
 
-        //  Spacer(Modifier.weight(0.2f))
+        Spacer(Modifier.weight(0.2f))
 
 
         Text(
             text = "Rahatul Aseaikin", color = offWhite, style = TextStyle(
                 fontSize = 18.ssp,
-                fontWeight = FontWeight.W700
+                fontWeight = FontWeight.SemiBold,
+                fontFamily = CalibreFontFamily(),
+                lineHeight = 0.ssp
             )
         )
 
         Text(
             text = "Mobile Application Developer", color = offWhite, style = TextStyle(
                 fontSize = 8.ssp,
-                fontWeight = FontWeight.W600
+                fontWeight = FontWeight.Medium,
+                fontFamily = InterFontFamily()
             ),
-            modifier = Modifier.padding(vertical = 6.sdp)
+            modifier = Modifier
         )
+
+        Spacer(Modifier.height(5.sdp))
 
         Text(
             text = "I build accessible, pixel-perfect digital experiences for the web.",
             color = textColor,
-            fontSize = 7.ssp,
-            modifier = Modifier.padding(vertical = 0.sdp)
+            fontSize = 6.ssp,
+            fontWeight = FontWeight.Normal,
+            modifier = Modifier.padding(vertical = 0.sdp),
+            lineHeight = 8.ssp
         )
 
         Spacer(Modifier.height(50.sdp))
 
 
-        ScrollItem()
-        ScrollItem()
-        ScrollItem()
+
+        Section.entries.forEach { section ->
+
+            ScrollItem(section.name.toString().uppercase())
+
+        }
+
 
         Spacer(Modifier.weight(1f))
 
 
         IconListContainer()
+
+        Spacer(Modifier.weight(0.1f))
 
 
     }
@@ -152,29 +179,27 @@ fun IconListContainer() {
     Row(
         horizontalArrangement = Arrangement.spacedBy(12.sdp),
         modifier = Modifier.fillMaxWidth(),
-
+        verticalAlignment = Alignment.CenterVertically
         ) {
-        Spacer(Modifier.weight(1f))
-
 
         Image(
             painter = painterResource(Res.drawable.github),
             contentDescription = "Github Icon",
-            Modifier.size(15.sdp),
+            Modifier.padding(bottom = 2.sdp).size(10.sdp),
             colorFilter = ColorFilter.tint(color = offWhite)
         )
 
         Image(
             painter = painterResource(Res.drawable.facebook),
             contentDescription = "facebook Icon",
-            Modifier.size(15.sdp),
+            Modifier.size(10.sdp),
             colorFilter = ColorFilter.tint(color = offWhite)
         )
 
         Image(
             painter = painterResource(Res.drawable.linkedin),
             contentDescription = "LinkedIn Icon",
-            Modifier.size(15.sdp),
+            Modifier.size(10.sdp),
             colorFilter = ColorFilter.tint(color = offWhite)
         )
 
@@ -186,15 +211,22 @@ fun IconListContainer() {
 }
 
 @Composable
-fun ScrollItem() {
+fun ScrollItem(name: String = " ") {
     Row(
         modifier = Modifier.padding(vertical = 4.sdp)
     ) {
+
+
+        //Image(painter = painterResource(Res.drawable))
+
+
+
         Text(
-            "----  ABOUT", style = TextStyle(
-                fontSize = 7.ssp,
+            name, style = TextStyle(
+                fontSize = 6.ssp,
                 color = Color(0xff64748b),
-                fontWeight = FontWeight.W500
+                fontWeight = FontWeight.Normal ,
+                fontFamily = InterFontFamily()
             )
         )
     }

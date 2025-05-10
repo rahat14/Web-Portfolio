@@ -45,13 +45,16 @@ fun ExperienceCard(
         )
     ) {
 
-        Row {
+        Row(
+            verticalAlignment = Alignment.Top
+        ) {
             Text(
                 timeLine, style = TextStyle(
                     fontSize = 7.ssp,
                     fontWeight = FontWeight.W500,
-                    color = textColor
-                )
+                    color = textColor ,
+                ) ,
+                modifier = Modifier.padding(top = 1.sdp)
             )
 
             Spacer(modifier = Modifier.size(12.sdp))
@@ -61,11 +64,12 @@ fun ExperienceCard(
                 Text(
                     "$title • $company", style = TextStyle(
                         fontSize = 8.ssp,
-                        fontWeight = FontWeight.W600,
+                        fontWeight = FontWeight.Medium,
                         color = offWhite
                     )
                 )
 
+                Spacer(modifier = Modifier.size(4.sdp))
 
                 Text(
                     details, style = TextStyle(

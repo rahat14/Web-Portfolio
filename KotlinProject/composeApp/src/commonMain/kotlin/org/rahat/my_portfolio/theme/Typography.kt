@@ -4,6 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import kotlinproject.composeapp.generated.resources.Inter_18pt_Medium
+import kotlinproject.composeapp.generated.resources.Inter_18pt_Regular
+import kotlinproject.composeapp.generated.resources.Inter_18pt_SemiBold
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.calibre_medium
 import kotlinproject.composeapp.generated.resources.calibre_semibold
@@ -12,6 +15,19 @@ import kotlinproject.composeapp.generated.resources.sf_mono_regular
 import kotlinproject.composeapp.generated.resources.sf_mono_semibold
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.FontResource
+
+
+@Composable
+fun InterFontFamily(): FontFamily {
+    return FontFamily(
+        fonts = listOf(
+            Res.font.Inter_18pt_Medium.asFont(fontWeight = FontWeight.Medium),
+            Res.font.Inter_18pt_SemiBold.asFont(fontWeight = FontWeight.SemiBold),
+            Res.font.Inter_18pt_Regular.asFont(fontWeight = FontWeight.Normal),
+        )
+    )
+}
+
 
 
 @Composable
