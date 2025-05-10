@@ -22,6 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import network.chaintech.sdpcomposemultiplatform.sdp
 import network.chaintech.sdpcomposemultiplatform.ssp
+import org.rahat.my_portfolio.theme.InterFontFamily
+import org.rahat.my_portfolio.theme.SfMonoFontFamily
 import org.rahat.my_portfolio.theme.offWhite
 import org.rahat.my_portfolio.theme.textColor
 
@@ -50,9 +52,10 @@ fun ExperienceCard(
         ) {
             Text(
                 timeLine, style = TextStyle(
-                    fontSize = 7.ssp,
-                    fontWeight = FontWeight.W500,
+                    fontSize = 5.ssp,
+                    fontWeight = FontWeight.Normal,
                     color = textColor ,
+                    fontFamily = InterFontFamily()
                 ) ,
                 modifier = Modifier.padding(top = 1.sdp)
             )
@@ -63,9 +66,10 @@ fun ExperienceCard(
 
                 Text(
                     "$title • $company", style = TextStyle(
-                        fontSize = 8.ssp,
+                        fontSize = 7.ssp,
                         fontWeight = FontWeight.Medium,
-                        color = offWhite
+                        color = offWhite,
+                        fontFamily = InterFontFamily()
                     )
                 )
 
@@ -73,9 +77,11 @@ fun ExperienceCard(
 
                 Text(
                     details, style = TextStyle(
-                        fontSize = 7.ssp,
-                        fontWeight = FontWeight.W400,
-                        color = textColor
+                        fontSize = 6.ssp,
+                        fontWeight = FontWeight.Normal,
+                        color = textColor,
+                        lineHeight = 8.ssp,
+                        fontFamily = InterFontFamily()
                     )
                 )
 
@@ -119,7 +125,8 @@ fun techStackItem(
             text = text,
             color = Color(0xFF16E3D1), // Bright cyan/teal color
             fontSize = 6.ssp,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Normal,
+            fontFamily = SfMonoFontFamily()
         )
     }
 }

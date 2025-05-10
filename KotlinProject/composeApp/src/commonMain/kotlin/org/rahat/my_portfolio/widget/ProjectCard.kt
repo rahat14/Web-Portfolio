@@ -28,6 +28,8 @@ import kotlinproject.composeapp.generated.resources.Res
 import network.chaintech.sdpcomposemultiplatform.sdp
 import network.chaintech.sdpcomposemultiplatform.ssp
 import org.jetbrains.compose.resources.painterResource
+import org.rahat.my_portfolio.theme.InterFontFamily
+import org.rahat.my_portfolio.theme.SfMonoFontFamily
 import org.rahat.my_portfolio.theme.offWhite
 import org.rahat.my_portfolio.theme.textColor
 
@@ -37,6 +39,10 @@ fun ProjectCard(
     details: String = "Currently, I'm a Senior Front-End Engineer at Klaviyo, specializing in accessibility. I contribute to the creation and maintenance of UI components that power Klaviyo’s frontend, ensuring our platform meets web accessibility standards and best practices to deliver an inclusive user experience.",
     techStack: List<String> = listOf("Java", "Kotlin"),
 ) {
+
+
+
+
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -60,7 +66,7 @@ fun ProjectCard(
                 contentDescription = " Icon",
                 modifier = Modifier
                     .padding(top = 2.sdp)
-                    .height(50.sdp).width(80.sdp)
+                    .height(45.sdp).width(75.sdp)
                     .clip(RoundedCornerShape(4.sdp)),
                 contentScale = ContentScale.Crop
             )
@@ -75,19 +81,21 @@ fun ProjectCard(
 
                 Text(
                     title, style = TextStyle(
-                        fontSize = 8.ssp,
-                        fontWeight = FontWeight.W600,
-                        color = offWhite
+                        fontSize = 7.ssp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = offWhite,
+                        fontFamily = InterFontFamily()
                     )
                 )
 
-             //   Spacer(modifier = Modifier.size(1.sdp))
+               Spacer(modifier = Modifier.size(1.sdp))
 
                 Text(
                     details, style = TextStyle(
-                        fontSize = 7.ssp,
-                        fontWeight = FontWeight.W400,
-                        color = textColor
+                        fontSize = 6.ssp,
+                        fontWeight = FontWeight.Normal,
+                        color = textColor,
+                        fontFamily = InterFontFamily()
                     )
                 )
 

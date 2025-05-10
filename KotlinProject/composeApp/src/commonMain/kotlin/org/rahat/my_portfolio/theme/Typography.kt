@@ -24,6 +24,7 @@ fun InterFontFamily(): FontFamily {
             Res.font.Inter_18pt_Medium.asFont(fontWeight = FontWeight.Medium),
             Res.font.Inter_18pt_SemiBold.asFont(fontWeight = FontWeight.SemiBold),
             Res.font.Inter_18pt_Regular.asFont(fontWeight = FontWeight.Normal),
+            Res.font.Inter_18pt_SemiBold.asFont(fontWeight = FontWeight.Bold),
         )
     )
 }
