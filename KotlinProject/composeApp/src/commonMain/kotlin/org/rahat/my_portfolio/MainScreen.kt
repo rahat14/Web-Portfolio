@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,7 +29,6 @@ import network.chaintech.sdpcomposemultiplatform.ssp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.rahat.my_portfolio.theme.Navy
-import org.rahat.my_portfolio.theme.White
 import org.rahat.my_portfolio.theme.offWhite
 import org.rahat.my_portfolio.theme.textColor
 import org.rahat.my_portfolio.widget.ExperienceCard
@@ -70,10 +68,11 @@ fun RightContainer(modifier: Modifier) {
                         " I'm a Senior Front-End Engineer at Klaviyo, specializing in accessibility. "
 
 
-            Text(text = longText, color = textColor , style = TextStyle(
-                fontSize = 7.ssp ,
-                fontWeight = FontWeight.W400,
-            )
+            Text(
+                text = longText, color = textColor, style = TextStyle(
+                    fontSize = 7.ssp,
+                    fontWeight = FontWeight.W400,
+                )
             )
         }
 
@@ -105,14 +104,14 @@ fun LeftContainer(modifier: Modifier) {
 
     Column(modifier = modifier) {
 
-      //  Spacer(Modifier.weight(0.2f))
+        //  Spacer(Modifier.weight(0.2f))
 
 
         Text(
             text = "Rahatul Aseaikin", color = offWhite, style = TextStyle(
                 fontSize = 18.ssp,
                 fontWeight = FontWeight.W700
-                )
+            )
         )
 
         Text(
@@ -128,7 +127,7 @@ fun LeftContainer(modifier: Modifier) {
             color = textColor,
             fontSize = 7.ssp,
             modifier = Modifier.padding(vertical = 0.sdp)
-            )
+        )
 
         Spacer(Modifier.height(50.sdp))
 
@@ -191,11 +190,13 @@ fun ScrollItem() {
     Row(
         modifier = Modifier.padding(vertical = 4.sdp)
     ) {
-        Text("----  ABOUT" , style =  TextStyle(
-            fontSize = 7.ssp ,
-            color = Color(0xff64748b) ,
-            fontWeight = FontWeight.W500
-        ))
+        Text(
+            "----  ABOUT", style = TextStyle(
+                fontSize = 7.ssp,
+                color = Color(0xff64748b),
+                fontWeight = FontWeight.W500
+            )
+        )
     }
 }
 

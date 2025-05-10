@@ -90,6 +90,10 @@ android {
     namespace = "org.rahat.my_portfolio"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
+    sourceSets["main"].res.srcDirs(
+        "src/commonMain/resources",
+    )
+
     defaultConfig {
         applicationId = "org.rahat.my_portfolio"
         minSdk = libs.versions.android.minSdk.get().toInt()
