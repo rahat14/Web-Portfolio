@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.compose.hot.reload)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -77,6 +78,9 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(libs.coil.svg)
+            implementation(libs.kotlinx.serialization.json)
+
+
 
         }
         desktopMain.dependencies {
