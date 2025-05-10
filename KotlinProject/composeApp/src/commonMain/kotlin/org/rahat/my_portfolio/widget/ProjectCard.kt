@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,6 +37,7 @@ import kotlinproject.composeapp.generated.resources.arrow
 import network.chaintech.sdpcomposemultiplatform.sdp
 import network.chaintech.sdpcomposemultiplatform.ssp
 import org.jetbrains.compose.resources.painterResource
+import org.rahat.my_portfolio.data.Project
 import org.rahat.my_portfolio.theme.Green
 import org.rahat.my_portfolio.theme.InterFontFamily
 import org.rahat.my_portfolio.theme.SfMonoFontFamily
@@ -43,11 +45,7 @@ import org.rahat.my_portfolio.theme.offWhite
 import org.rahat.my_portfolio.theme.textColor
 
 @Composable
-fun ProjectCard(
-    title: String = "This is a title",
-    details: String = "Currently, I'm a Senior Front-End Engineer at Klaviyo, specializing in accessibility. I contribute to the creation and maintenance of UI components that power Klaviyo’s frontend, ensuring our platform meets web accessibility standards and best practices to deliver an inclusive user experience.",
-    techStack: List<String> = listOf("Java", "Kotlin"),
-) {
+fun ProjectCard(project: Project) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
@@ -110,7 +108,7 @@ fun ProjectCard(
                     modifier = Modifier.hoverable(interactionSource),
                 ) {
                     Text(
-                        title, style = TextStyle(
+                        project.name, style = TextStyle(
                             fontSize = 6.ssp,
                             fontWeight = FontWeight.Bold,
                             color = if (isHovered) Green else offWhite,
@@ -138,7 +136,7 @@ fun ProjectCard(
                 Spacer(modifier = Modifier.size(1.sdp))
 
                 Text(
-                    details, style = TextStyle(
+                    project.description, style = TextStyle(
                         fontSize = 6.ssp,
                         fontWeight = FontWeight.Normal,
                         color = textColor,
@@ -148,11 +146,13 @@ fun ProjectCard(
 
 
 
-                Row(
+                FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(4.sdp),
-                    modifier = Modifier.padding(vertical = 5.sdp)
+                    modifier = Modifier.padding(vertical = 5.sdp),
+                    verticalArrangement = Arrangement.spacedBy(2.sdp)
                 ) {
-                    for (item in techStack) {
+                    for (item in project.tech_stack) {
+
                         techStackItem(text = item)
                     }
                 }

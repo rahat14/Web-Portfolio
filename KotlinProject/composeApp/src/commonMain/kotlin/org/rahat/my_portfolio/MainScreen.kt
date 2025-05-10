@@ -47,6 +47,8 @@ import network.chaintech.sdpcomposemultiplatform.sdp
 import network.chaintech.sdpcomposemultiplatform.ssp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.rahat.my_portfolio.data.DeveloperProfile
+import org.rahat.my_portfolio.repo.ProfileRepository
 import org.rahat.my_portfolio.theme.CalibreFontFamily
 import org.rahat.my_portfolio.theme.InterFontFamily
 import org.rahat.my_portfolio.theme.LightSlate
@@ -60,7 +62,10 @@ import org.rahat.my_portfolio.widget.TypingText
 
 
 @Composable
-fun MainScreen() {
+fun MainScreen(vm: ProfileViewModel = ProfileViewModel(repository = ProfileRepository())) {
+    val uiState = vm.profileState
+
+
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
@@ -90,7 +95,6 @@ fun MainScreen() {
                         }
                     }
                 },
-
                 onScrollTap = { section ->
                     when (section) {
                         Section.Experience -> {
@@ -113,7 +117,8 @@ fun MainScreen() {
                         }
                     }
                 },
-                firstVisibleItemIndex
+                firstVisibleItemIndex,
+                uiState
             )
 
             Box(
@@ -127,7 +132,7 @@ fun MainScreen() {
 
                                 if (scrollDelta != 0f) {
                                     scope.launch {
-                                        scrollState .animateScrollBy((scrollDelta * 2f)) // 250f
+                                        scrollState.animateScrollBy((scrollDelta * 2f)) // 250f
                                     }
                                 }
                             }
@@ -136,7 +141,7 @@ fun MainScreen() {
             )
 
 
-            RightContainer(modifier = Modifier.weight(1.3f), scrollState)
+            RightContainer(modifier = Modifier.weight(1.3f), scrollState, uiState)
 
 
         }
@@ -148,7 +153,7 @@ fun MainScreen() {
 }
 
 @Composable
-fun RightContainer(modifier: Modifier, scrollState: LazyListState) {
+fun RightContainer(modifier: Modifier, scrollState: LazyListState, uiState: DeveloperProfile?) {
 
 
     LazyColumn(modifier = modifier, state = scrollState) {
@@ -178,8 +183,10 @@ fun RightContainer(modifier: Modifier, scrollState: LazyListState) {
             Spacer(modifier = Modifier.height(12.sdp))
         }
 
-        items(5) {
-            ExperienceCard()
+        items(uiState?.experience?.size ?: 0) {
+            if (uiState != null) {
+                ExperienceCard( uiState.experience[it])
+            }
             Spacer(modifier = Modifier.height(8.sdp))
         }
 
@@ -220,8 +227,12 @@ fun RightContainer(modifier: Modifier, scrollState: LazyListState) {
             Spacer(modifier = Modifier.height(8.sdp))
         }
 
-        items(5) {
-            ProjectCard()
+        items(uiState?.projects?.size ?: 0) {
+            if (uiState != null) {
+                ProjectCard(
+                    uiState.projects[it]
+                )
+            }
             Spacer(modifier = Modifier.height(8.sdp))
         }
 
@@ -233,7 +244,8 @@ fun RightContainer(modifier: Modifier, scrollState: LazyListState) {
 fun LeftContainer(
     modifier: Modifier = Modifier,
     onScrollTap: (Section) -> Unit,
-    firstVisibleItemIndex: Int
+    firstVisibleItemIndex: Int,
+    uiState: DeveloperProfile?
 ) {
 
     Column(
@@ -269,7 +281,7 @@ fun LeftContainer(
         Spacer(Modifier.height(5.sdp))
 
         Text(
-            text = "I build accessible, pixel-perfect digital experiences for the web.",
+            text = "Crafting accessible, pixel-perfect mobile experiences that delight and perform.",
             color = textColor,
             fontSize = 6.ssp,
             fontWeight = FontWeight.Normal,
