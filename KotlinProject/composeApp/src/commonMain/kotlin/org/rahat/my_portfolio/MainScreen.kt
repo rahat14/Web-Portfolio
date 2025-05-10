@@ -39,7 +39,6 @@ import kotlinproject.composeapp.generated.resources.facebook
 import kotlinproject.composeapp.generated.resources.github
 import kotlinproject.composeapp.generated.resources.horizontral_line
 import kotlinproject.composeapp.generated.resources.linkedin
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import network.chaintech.sdpcomposemultiplatform.sdp
 import network.chaintech.sdpcomposemultiplatform.ssp
@@ -61,12 +60,16 @@ fun MainScreen() {
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
+    val firstVisibleItemIndex = scrollState.firstVisibleItemIndex
+
     Box(modifier = Modifier.fillMaxSize().background(Navy)) {
 
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 24.sdp)) {
 
 
-            LeftContainer(modifier = Modifier.weight(1f) ,
+            LeftContainer(
+                modifier = Modifier.weight(1f),
+
                 onScrollTap = { section ->
                     when (section) {
                         Section.Experience -> {
@@ -75,21 +78,24 @@ fun MainScreen() {
                             }
 
                         }
+
                         Section.Projects -> {
                             scope.launch {
                                 scrollState.animateScrollToItem(8)
                             }
                         }
+
                         else -> {
                             scope.launch {
                                 scrollState.animateScrollToItem(0)
                             }
                         }
                     }
-                }
+                },
+                firstVisibleItemIndex
             )
             Spacer(Modifier.weight(0.3f))
-            RightContainer(modifier = Modifier.weight(1.3f) , scrollState)
+            RightContainer(modifier = Modifier.weight(1.3f), scrollState)
 
 
         }
@@ -104,7 +110,7 @@ fun MainScreen() {
 fun RightContainer(modifier: Modifier, scrollState: LazyListState) {
 
 
-    LazyColumn(modifier = modifier , state = scrollState) {
+    LazyColumn(modifier = modifier, state = scrollState) {
 
         item {
             Spacer(modifier = Modifier.size(28.sdp))
@@ -183,7 +189,11 @@ fun RightContainer(modifier: Modifier, scrollState: LazyListState) {
 }
 
 @Composable
-fun LeftContainer(modifier: Modifier = Modifier, onScrollTap: (Section) -> Unit) {
+fun LeftContainer(
+    modifier: Modifier = Modifier,
+    onScrollTap: (Section) -> Unit,
+    firstVisibleItemIndex: Int
+) {
 
     Column(
         modifier = modifier,
@@ -228,12 +238,14 @@ fun LeftContainer(modifier: Modifier = Modifier, onScrollTap: (Section) -> Unit)
 
         Section.entries.forEach { section ->
 
-            ScrollItem(section.name.toString().uppercase() , modifier =
+            ScrollItem(
+                section.label, modifier =
                 Modifier.clickable {
                     onScrollTap(
                         section
                     )
-                }
+                },
+                firstVisibleItemIndex
 
             )
 
@@ -293,15 +305,26 @@ fun IconListContainer() {
 }
 
 @Composable
-fun ScrollItem(name: String = " " , modifier: Modifier) {
+fun ScrollItem(name: String = " ", modifier: Modifier, firstVisibleItemIndex: Int) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
 
+
+    val overrideHover = if (firstVisibleItemIndex == 0 && name == Section.About.label) {
+        true
+    } else if (
+        firstVisibleItemIndex < 6 && name == Section.Experience.label && firstVisibleItemIndex != 0
+    ) {
+        true
+    } else if (firstVisibleItemIndex >= 6 && name == Section.Projects.label) {
+        true
+    } else false
+
     val normalSize = 20.sdp
     val hoveredSize = 35.sdp
 
-    val targetSize = if (isHovered) hoveredSize else normalSize
+    val targetSize = if (isHovered || overrideHover) hoveredSize else normalSize
 
     val animatedSize by animateDpAsState(
         targetValue = targetSize,
@@ -320,7 +343,7 @@ fun ScrollItem(name: String = " " , modifier: Modifier) {
             contentDescription = "horizontal line",
             modifier = Modifier.height((1).sdp).width(animatedSize),
             contentScale = ContentScale.Crop,
-            colorFilter = ColorFilter.tint(if (isHovered) Color.White else offWhite)
+            colorFilter = ColorFilter.tint(if (isHovered || overrideHover) Color.White else offWhite)
         )
 
         Spacer(modifier = Modifier.size(2.sdp))
@@ -328,7 +351,7 @@ fun ScrollItem(name: String = " " , modifier: Modifier) {
         Text(
             name, style = TextStyle(
                 fontSize = 5.ssp,
-                color = if (isHovered) Color.White else Color(0xff64748b),
+                color = if (isHovered || overrideHover) Color.White else Color(0xff64748b),
                 fontWeight = FontWeight.Bold,
                 fontFamily = SfMonoFontFamily()
             ), modifier = Modifier
