@@ -4,6 +4,7 @@ import Section
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -19,10 +20,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,12 +39,15 @@ import kotlinproject.composeapp.generated.resources.facebook
 import kotlinproject.composeapp.generated.resources.github
 import kotlinproject.composeapp.generated.resources.horizontral_line
 import kotlinproject.composeapp.generated.resources.linkedin
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import network.chaintech.sdpcomposemultiplatform.sdp
 import network.chaintech.sdpcomposemultiplatform.ssp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.rahat.my_portfolio.theme.CalibreFontFamily
 import org.rahat.my_portfolio.theme.InterFontFamily
+import org.rahat.my_portfolio.theme.LightSlate
 import org.rahat.my_portfolio.theme.Navy
 import org.rahat.my_portfolio.theme.SfMonoFontFamily
 import org.rahat.my_portfolio.theme.offWhite
@@ -51,15 +58,38 @@ import org.rahat.my_portfolio.widget.ProjectCard
 
 @Composable
 fun MainScreen() {
+    val scrollState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
 
     Box(modifier = Modifier.fillMaxSize().background(Navy)) {
 
         Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 24.sdp)) {
 
 
-            LeftContainer(modifier = Modifier.weight(1f))
+            LeftContainer(modifier = Modifier.weight(1f) ,
+                onScrollTap = { section ->
+                    when (section) {
+                        Section.Experience -> {
+                            scope.launch {
+                                scrollState.animateScrollToItem(3)
+                            }
+
+                        }
+                        Section.Projects -> {
+                            scope.launch {
+                                scrollState.animateScrollToItem(8)
+                            }
+                        }
+                        else -> {
+                            scope.launch {
+                                scrollState.animateScrollToItem(0)
+                            }
+                        }
+                    }
+                }
+            )
             Spacer(Modifier.weight(0.3f))
-            RightContainer(modifier = Modifier.weight(1.3f))
+            RightContainer(modifier = Modifier.weight(1.3f) , scrollState)
 
 
         }
@@ -71,10 +101,10 @@ fun MainScreen() {
 }
 
 @Composable
-fun RightContainer(modifier: Modifier) {
+fun RightContainer(modifier: Modifier, scrollState: LazyListState) {
 
 
-    LazyColumn(modifier = modifier) {
+    LazyColumn(modifier = modifier , state = scrollState) {
 
         item {
             Spacer(modifier = Modifier.size(28.sdp))
@@ -144,8 +174,6 @@ fun RightContainer(modifier: Modifier) {
         }
 
         items(5) {
-
-
             ProjectCard()
             Spacer(modifier = Modifier.height(8.sdp))
         }
@@ -155,7 +183,7 @@ fun RightContainer(modifier: Modifier) {
 }
 
 @Composable
-fun LeftContainer(modifier: Modifier) {
+fun LeftContainer(modifier: Modifier = Modifier, onScrollTap: (Section) -> Unit) {
 
     Column(
         modifier = modifier,
@@ -200,7 +228,14 @@ fun LeftContainer(modifier: Modifier) {
 
         Section.entries.forEach { section ->
 
-            ScrollItem(section.name.toString().uppercase())
+            ScrollItem(section.name.toString().uppercase() , modifier =
+                Modifier.clickable {
+                    onScrollTap(
+                        section
+                    )
+                }
+
+            )
 
         }
 
@@ -221,7 +256,7 @@ fun LeftContainer(modifier: Modifier) {
 fun IconListContainer() {
 
     Row(
-        horizontalArrangement = Arrangement.spacedBy(12.sdp),
+        horizontalArrangement = Arrangement.spacedBy(6.sdp),
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -230,21 +265,24 @@ fun IconListContainer() {
             painter = painterResource(Res.drawable.github),
             contentDescription = "Github Icon",
             Modifier.padding(bottom = 1.sdp).size(10.sdp),
-            colorFilter = ColorFilter.tint(color = offWhite)
+            colorFilter = ColorFilter
+                .tint(color = LightSlate)
         )
 
         Image(
             painter = painterResource(Res.drawable.facebook),
             contentDescription = "facebook Icon",
             Modifier.size(10.sdp),
-            colorFilter = ColorFilter.tint(color = offWhite)
+            colorFilter = ColorFilter
+                .tint(color = LightSlate)
         )
 
         Image(
             painter = painterResource(Res.drawable.linkedin),
             contentDescription = "LinkedIn Icon",
             Modifier.size(10.sdp),
-            colorFilter = ColorFilter.tint(color = offWhite)
+            colorFilter = ColorFilter
+                .tint(color = LightSlate)
         )
 
         Spacer(Modifier.weight(1f))
@@ -255,7 +293,7 @@ fun IconListContainer() {
 }
 
 @Composable
-fun ScrollItem(name: String = " ") {
+fun ScrollItem(name: String = " " , modifier: Modifier) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
@@ -271,12 +309,11 @@ fun ScrollItem(name: String = " ") {
     )
 
     Row(
-        modifier = Modifier.padding(vertical = 4.sdp).hoverable(interactionSource),
+        modifier = modifier.padding(vertical = 4.sdp).hoverable(interactionSource),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
 
         ) {
-
 
         Image(
             painter = painterResource(Res.drawable.horizontral_line),
