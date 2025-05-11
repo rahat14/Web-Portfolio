@@ -42,13 +42,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinproject.composeapp.generated.resources.Res
-import kotlinproject.composeapp.generated.resources.facebook
-import kotlinproject.composeapp.generated.resources.github
 import kotlinproject.composeapp.generated.resources.horizontral_line
-import kotlinproject.composeapp.generated.resources.linkedin
+import kotlinproject.composeapp.generated.resources.linkedin_brands
+import kotlinproject.composeapp.generated.resources.square_facebook_brands
+import kotlinproject.composeapp.generated.resources.square_github_brands
 import kotlinx.coroutines.launch
 import network.chaintech.sdpcomposemultiplatform.sdp
 import network.chaintech.sdpcomposemultiplatform.ssp
@@ -56,7 +57,6 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.rahat.my_portfolio.data.DeveloperProfile
 import org.rahat.my_portfolio.repo.ProfileRepository
-import org.rahat.my_portfolio.theme.CalibreFontFamily
 import org.rahat.my_portfolio.theme.InterFontFamily
 import org.rahat.my_portfolio.theme.LightSlate
 import org.rahat.my_portfolio.theme.Navy
@@ -213,7 +213,7 @@ fun RightContainer(
     val density = LocalDensity.current
     val size = LocalWindowInfo.current.containerSize
 
-    val height =  with(density) {
+    val height = with(density) {
         size.height.toDp().value.toInt()
     }
 
@@ -345,8 +345,8 @@ fun LeftContainer(
             fullText = "Rahatul Aseaikin",
             style = TextStyle(
                 fontSize = 18.ssp,
-                fontWeight = FontWeight.SemiBold,
-                fontFamily = CalibreFontFamily(),
+                fontWeight = FontWeight.Bold,
+                fontFamily = FontFamily.Monospace,
                 lineHeight = 0.ssp,
                 color = offWhite,
             )
@@ -358,10 +358,11 @@ fun LeftContainer(
             text = "Mobile Application Developer", color = offWhite, style = TextStyle(
                 fontSize = 8.ssp,
                 fontWeight = FontWeight.Medium,
-                fontFamily = InterFontFamily()
             ),
             modifier = Modifier
         )
+
+        IconListContainer()
 
         Spacer(Modifier.height(5.sdp))
 
@@ -394,7 +395,7 @@ fun LeftContainer(
 
             }
 
-            Spacer(Modifier.weight(1f))
+           Spacer(Modifier.weight(1f))
         }
 
 
@@ -413,9 +414,10 @@ fun LeftContainer(
 @Composable
 fun IconListContainer() {
 
+
     Row(
         horizontalArrangement = Arrangement.spacedBy(6.sdp),
-        modifier = Modifier.fillMaxWidth().height(20.sdp),
+        modifier = Modifier.height(20.sdp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -429,23 +431,24 @@ fun IconListContainer() {
             val targetSize = if (isHovered) hoveredSize else normalSize
 
 
-            var icon = Res.drawable.github
+            var icon = Res.drawable.square_github_brands
             if (section == SocialLink.FB) {
-                icon = Res.drawable.facebook
+                icon = Res.drawable.square_facebook_brands
             } else if (section == SocialLink.Linkedlin) {
-                icon = Res.drawable.linkedin
+                icon = Res.drawable.linkedin_brands
             }
 
 
             Image(
                 painter = painterResource(icon),
-                contentDescription = " Icon",
+                contentDescription = "",
                 Modifier.padding(bottom = 0.sdp).size(targetSize)
                     .clickable {
                         openLink(section.url)
-                    }.hoverable(interactionSource),
+                    }
+                    .hoverable(interactionSource),
                 colorFilter = ColorFilter
-                    .tint(color = LightSlate)
+                    .tint(color = if(isHovered){Color.White}else {LightSlate})
             )
 
         }
@@ -454,7 +457,6 @@ fun IconListContainer() {
         Spacer(Modifier.weight(1f))
 
     }
-
 
 }
 

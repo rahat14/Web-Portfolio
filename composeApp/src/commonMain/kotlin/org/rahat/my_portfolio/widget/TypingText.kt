@@ -14,18 +14,23 @@ import kotlinx.coroutines.delay
 @Composable
 fun TypingText(
     fullText: String,
-    typingSpeed: Long = 50L  , // in milliseconds per character ,
-    style : TextStyle = TextStyle()
+    typingSpeed: Long = 50L,
+    style: TextStyle = TextStyle()
 ) {
     var visibleText by remember { mutableStateOf("") }
+    val characters = fullText.toCharArray()
 
     LaunchedEffect(fullText) {
+        delay(500)
+
         visibleText = ""
-        for (i in fullText.indices) {
-            visibleText = fullText.substring(0, i + 1)
+        val builder = StringBuilder()
+        characters.forEachIndexed { index, char ->
+            builder.append(char)
+            visibleText = builder.toString()
             delay(typingSpeed)
         }
     }
 
-    Text(text = visibleText , style = style)
+    Text(text = visibleText, style = style)
 }
