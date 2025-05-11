@@ -26,7 +26,7 @@ var info = """
             "Kotlin",
             "Jetpack Compose",
             "Flutter",
-            "XML",
+            "XML"
             
           ]
         },
@@ -39,7 +39,6 @@ var info = """
            "tech_stack": [
             "JAVA",
             "XML"
-           
           ]
         },
         {
@@ -83,6 +82,7 @@ var info = """
       "projects": [
         {
           "name": "Programming Hero App",
+          "image": "https://lh3.googleusercontent.com/X2ac44bQANaoEW-1VGOcOyhiYblvQH7i_uhGpQa1KHj9pdUFxgFTxoEJSzE6yM4nl9Y", 
           "link": "https://play.google.com/store/apps/details?id=com.learn.programming.hero",
           "description": "An ed-tech app offering interactive programming lessons video and a vibrant learning community.",
           "tech_stack": [
@@ -102,6 +102,7 @@ var info = """
             "Compose Multi-Platform",
             "Ktor",
             "Koin",
+             "OpenAPI",
             "Ballast"
           ]
         },

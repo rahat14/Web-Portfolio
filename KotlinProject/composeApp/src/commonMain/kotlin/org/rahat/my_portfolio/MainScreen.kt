@@ -1,6 +1,7 @@
 package org.rahat.my_portfolio
 
 import Section
+import SocialLink
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -165,16 +166,23 @@ fun RightContainer(modifier: Modifier, scrollState: LazyListState, uiState: Deve
         item {
 
 
-            val longText =
-                "I’m a developer passionate about crafting accessible, pixel-perfect user interfaces that blend thoughtful design with robust engineering." +
-                        " My favorite work lies at the intersection of design and development, creating experiences that not only look great but are meticulously built for performance and usability. Currently," +
-                        " I'm a Senior Front-End Engineer at Klaviyo, specializing in accessibility. "
+            val longText = """
+                I'm a mobile developer passionate about crafting robust, intuitive, and performant applications that bridge design and engineering across platforms. I thrive at the intersection of user experience and technology—bringing thoughtful UI to life with clean architecture and scalable code.
+
+                Currently, I focus on building high-quality mobile experiences using Kotlin Multiplatform, Jetpack Compose, and Flutter. My expertise lies in leading the development of cross-platform apps, implementing architecture patterns, optimizing performance, and ensuring maintainability. I take pride in delivering features that not only work well but feel great to use.
+
+                Over the years, I’ve worked across startups, agencies, and large-scale educational platforms—shaping products used by millions globally. From building DRM-protected media apps to mentoring juniors and converting legacy codebases to modern, modular solutions, I enjoy solving real-world challenges through elegant code.
+
+                In my spare time, you’ll find me exploring new technologies, contributing to open-source projects like MRT Buddy, or just relaxing with a good book,  or a long walk through Hyrule with a Master Sword in hand.
+            """.trimIndent()
+
 
 
             Text(
                 text = longText, color = textColor, style = TextStyle(
-                    fontSize = 7.ssp,
-                    fontWeight = FontWeight.W400,
+                    fontSize = (5.8).ssp,
+                    fontWeight = FontWeight.Normal,
+                    fontFamily = InterFontFamily()
                 )
             )
         }
@@ -326,33 +334,41 @@ fun IconListContainer() {
 
     Row(
         horizontalArrangement = Arrangement.spacedBy(6.sdp),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().height(20.sdp),
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        Image(
-            painter = painterResource(Res.drawable.github),
-            contentDescription = "Github Icon",
-            Modifier.padding(bottom = 1.sdp).size(10.sdp),
-            colorFilter = ColorFilter
-                .tint(color = LightSlate)
-        )
+        SocialLink.entries.forEach { section ->
+            val interactionSource = remember { MutableInteractionSource() }
+            val isHovered by interactionSource.collectIsHoveredAsState()
 
-        Image(
-            painter = painterResource(Res.drawable.facebook),
-            contentDescription = "facebook Icon",
-            Modifier.size(10.sdp),
-            colorFilter = ColorFilter
-                .tint(color = LightSlate)
-        )
+            val normalSize = 10.sdp
+            val hoveredSize = 14.sdp
 
-        Image(
-            painter = painterResource(Res.drawable.linkedin),
-            contentDescription = "LinkedIn Icon",
-            Modifier.size(10.sdp),
-            colorFilter = ColorFilter
-                .tint(color = LightSlate)
-        )
+            val targetSize = if (isHovered) hoveredSize else normalSize
+
+
+            var icon = Res.drawable.github
+            if(section ==  SocialLink.FB){
+                icon  = Res.drawable.facebook
+            }else if (section ==  SocialLink.Linkedlin){
+                icon  = Res.drawable.linkedin
+            }
+
+
+            Image(
+                painter = painterResource(icon),
+                contentDescription = " Icon",
+                Modifier.padding(bottom = 0.sdp).size(targetSize)
+                    .clickable {
+                    openLink(section.url)
+                }.hoverable(interactionSource),
+                colorFilter = ColorFilter
+                    .tint(color = LightSlate)
+            )
+
+        }
+
 
         Spacer(Modifier.weight(1f))
 

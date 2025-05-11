@@ -3,3 +3,10 @@ enum class Section(val label: String) {
     Experience("EXPERIENCE"),
     Projects("PROJECTS")
 }
+
+
+enum class SocialLink(val url: String) {
+    Github("https://github.com/rahat14"),
+    Linkedlin("https://www.linkedin.com/in/rahat-shovo/"),
+    FB("https://www.facebook.com/profile.php?id=100076692103324")
+}

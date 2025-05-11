@@ -79,6 +79,7 @@ kotlin {
             implementation(compose.material3)
             implementation(libs.coil.svg)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kamel.image.default)
 
 
 

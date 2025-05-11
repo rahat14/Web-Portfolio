@@ -32,7 +32,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import kotlinproject.composeapp.generated.resources.ProjectManagement
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.arrow
 import network.chaintech.sdpcomposemultiplatform.sdp
@@ -73,7 +74,7 @@ fun ProjectCard(project: Project) {
     Card(
         modifier = Modifier.fillMaxWidth()
             .clickable {
-                 openLink(project.link)
+                openLink(project.link)
             }
             .hoverable(interactionSource),
         colors = CardDefaults.cardColors(
@@ -93,14 +94,21 @@ fun ProjectCard(project: Project) {
         ) {
 
 
-            Image(
-                painter = painterResource(Res.drawable.ProjectManagement),
-                contentDescription = " Icon",
+            val painterResource = asyncPainterResource(data = project.image.toString())
+
+
+
+
+            KamelImage(
+                { painterResource }, contentDescription = " Icon",
                 modifier = Modifier
                     .padding(top = 2.sdp)
-                    .height(45.sdp).width(75.sdp)
+                    .height(40.sdp).width(70.sdp)
                     .clip(RoundedCornerShape(4.sdp)),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
+                onFailure = {
+                    println("Failed to load image: ${project.image}. Error: $it")
+                }
             )
 
 

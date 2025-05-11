@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -85,8 +86,9 @@ fun ExperienceCard(experience: Experience) {
 
 
 
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.sdp),
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(3.sdp),
+                    verticalArrangement = Arrangement.spacedBy(2.sdp),
                     modifier = Modifier.padding(vertical = 5.sdp)
                 ) {
                     for (item in experience.tech_stack) {
