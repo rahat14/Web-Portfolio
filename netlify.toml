@@ -1,5 +1,5 @@
 [build]
-  command = "gradle wasmJsBrowserProductionWebpack"
+  command = "./gradlew wasmJsBrowserProductionWebpack"
   publish = "composeApp/build/kotlin-webpack/wasmJs/productionExecutable"
 
 [build.environment]
