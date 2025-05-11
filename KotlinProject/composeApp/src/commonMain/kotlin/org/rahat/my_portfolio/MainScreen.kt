@@ -2,6 +2,7 @@ package org.rahat.my_portfolio
 
 import Section
 import SocialLink
+import WindowSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,6 +26,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,8 +39,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.facebook
 import kotlinproject.composeapp.generated.resources.github
@@ -57,6 +63,7 @@ import org.rahat.my_portfolio.theme.Navy
 import org.rahat.my_portfolio.theme.SfMonoFontFamily
 import org.rahat.my_portfolio.theme.offWhite
 import org.rahat.my_portfolio.theme.textColor
+import org.rahat.my_portfolio.utils.rememberWindowSize
 import org.rahat.my_portfolio.widget.ExperienceCard
 import org.rahat.my_portfolio.widget.ProjectCard
 import org.rahat.my_portfolio.widget.TypingText
@@ -65,86 +72,128 @@ import org.rahat.my_portfolio.widget.TypingText
 @Composable
 fun MainScreen(vm: ProfileViewModel = ProfileViewModel(repository = ProfileRepository())) {
     val uiState = vm.profileState
-
+    val windowSize = rememberWindowSize()
 
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
     val firstVisibleItemIndex = scrollState.firstVisibleItemIndex
+    val scrollListenerModifier = Modifier.pointerInput(Unit) {
+        awaitPointerEventScope {
+            while (true) {
+                val event = awaitPointerEvent()
+                val scrollDelta = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f
 
+                if (scrollDelta != 0f) {
+                    scope.launch {
+                        scrollState.animateScrollBy((scrollDelta * 2f)) // 250f
+                    }
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
             .background(Navy)
     ) {
 
-        Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 24.sdp)) {
+        when (windowSize) {
+            WindowSize.COMPACT -> {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.sdp).verticalScroll(
+                        rememberScrollState()
+                    )
+                ) {
 
 
-            LeftContainer(
-                modifier = Modifier.weight(1f).pointerInput(Unit) {
-                    awaitPointerEventScope {
-                        while (true) {
-                            val event = awaitPointerEvent()
-                            val scrollDelta = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f
-
-                            if (scrollDelta != 0f) {
-                                scope.launch {
-                                    scrollState.animateScrollBy((scrollDelta * 2f)) // 250f
-                                }
-                            }
-                        }
-                    }
-                },
-                onScrollTap = { section ->
-                    when (section) {
-                        Section.Experience -> {
-                            scope.launch {
-                                scrollState.animateScrollToItem(3)
-                            }
-
-                        }
-
-                        Section.Projects -> {
-                            scope.launch {
-                                scrollState.animateScrollToItem(8)
-                            }
-                        }
-
-                        else -> {
-                            scope.launch {
-                                scrollState.animateScrollToItem(0)
-                            }
-                        }
-                    }
-                },
-                firstVisibleItemIndex,
-                uiState
-            )
-
-            Box(
-                Modifier.fillMaxHeight()
-                    .weight(0.3f)
-                    .pointerInput(Unit) {
-                        awaitPointerEventScope {
-                            while (true) {
-                                val event = awaitPointerEvent()
-                                val scrollDelta = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f
-
-                                if (scrollDelta != 0f) {
+                    LeftContainer(
+                        modifier = Modifier,
+                        onScrollTap = { section ->
+                            when (section) {
+                                Section.Experience -> {
                                     scope.launch {
-                                        scrollState.animateScrollBy((scrollDelta * 2f)) // 250f
+                                        scrollState.animateScrollToItem(3)
+                                    }
+
+                                }
+
+                                Section.Projects -> {
+                                    scope.launch {
+                                        scrollState.animateScrollToItem(8)
+                                    }
+                                }
+
+                                else -> {
+                                    scope.launch {
+                                        scrollState.animateScrollToItem(0)
                                     }
                                 }
                             }
-                        }
-                    }
-            )
+                        },
+                        firstVisibleItemIndex,
+                        uiState,
+                        windowSize
+                    )
 
 
-            RightContainer(modifier = Modifier.weight(1.3f), scrollState, uiState)
+
+                    RightContainer(modifier = Modifier, scrollState, uiState, windowSize)
 
 
+                }
+            }
+
+            else -> {
+                Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 24.sdp)) {
+
+
+                    LeftContainer(
+                        modifier = Modifier.weight(1f).then(scrollListenerModifier),
+                        onScrollTap = { section ->
+                            when (section) {
+                                Section.Experience -> {
+                                    scope.launch {
+                                        scrollState.animateScrollToItem(3)
+                                    }
+
+                                }
+
+                                Section.Projects -> {
+                                    scope.launch {
+                                        scrollState.animateScrollToItem(8)
+                                    }
+                                }
+
+                                else -> {
+                                    scope.launch {
+                                        scrollState.animateScrollToItem(0)
+                                    }
+                                }
+                            }
+                        },
+                        firstVisibleItemIndex,
+                        uiState,
+                        windowSize = windowSize
+                    )
+
+                    Box(
+                        Modifier.fillMaxHeight()
+                            .weight(0.3f)
+                            .then(scrollListenerModifier)
+                    )
+
+
+                    RightContainer(
+                        modifier = Modifier.weight(1.3f),
+                        scrollState,
+                        uiState,
+                        windowSize = windowSize
+                    )
+
+
+                }
+            }
         }
 
 
@@ -154,10 +203,30 @@ fun MainScreen(vm: ProfileViewModel = ProfileViewModel(repository = ProfileRepos
 }
 
 @Composable
-fun RightContainer(modifier: Modifier, scrollState: LazyListState, uiState: DeveloperProfile?) {
+fun RightContainer(
+    modifier: Modifier,
+    scrollState: LazyListState,
+    uiState: DeveloperProfile?,
+    windowSize: WindowSize
+) {
 
+    val density = LocalDensity.current
+    val size = LocalWindowInfo.current.containerSize
 
-    LazyColumn(modifier = modifier, state = scrollState) {
+    val height =  with(density) {
+        size.height.toDp().value.toInt()
+    }
+
+    val sizeModifier = if (windowSize != WindowSize.COMPACT) {
+        Modifier
+    } else {
+
+        Modifier.height(height = (height * 0.80).dp)
+    }
+
+    LazyColumn(
+        modifier = modifier.then(sizeModifier), state = scrollState,
+    ) {
 
         item {
             Spacer(modifier = Modifier.size(28.sdp))
@@ -193,7 +262,7 @@ fun RightContainer(modifier: Modifier, scrollState: LazyListState, uiState: Deve
 
         items(uiState?.experience?.size ?: 0) {
             if (uiState != null) {
-                ExperienceCard( uiState.experience[it])
+                ExperienceCard(uiState.experience[it])
             }
             Spacer(modifier = Modifier.height(8.sdp))
         }
@@ -253,15 +322,23 @@ fun LeftContainer(
     modifier: Modifier = Modifier,
     onScrollTap: (Section) -> Unit,
     firstVisibleItemIndex: Int,
-    uiState: DeveloperProfile?
+    uiState: DeveloperProfile?,
+    windowSize: WindowSize
 ) {
+
 
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.Start
     ) {
 
-        Spacer(Modifier.weight(0.2f))
+
+        if (windowSize != WindowSize.COMPACT) {
+            Spacer(Modifier.weight(0.2f))
+
+        } else Spacer(Modifier.height(20.sdp))
+
+
 
 
         TypingText(
@@ -301,28 +378,32 @@ fun LeftContainer(
 
 
 
-        Section.entries.forEach { section ->
+        if (windowSize != WindowSize.COMPACT) {
+            Section.entries.forEach { section ->
 
-            ScrollItem(
-                section.label, modifier =
-                    Modifier.clickable {
-                        onScrollTap(
-                            section
-                        )
-                    },
-                firstVisibleItemIndex
+                ScrollItem(
+                    section.label, modifier =
+                        Modifier.clickable {
+                            onScrollTap(
+                                section
+                            )
+                        },
+                    firstVisibleItemIndex
 
-            )
+                )
 
+            }
+
+            Spacer(Modifier.weight(1f))
         }
-
-
-        Spacer(Modifier.weight(1f))
 
 
         IconListContainer()
 
-        Spacer(Modifier.weight(0.1f))
+
+        if (windowSize != WindowSize.COMPACT) {
+            Spacer(Modifier.weight(0.1f))
+        }
 
 
     }
@@ -349,10 +430,10 @@ fun IconListContainer() {
 
 
             var icon = Res.drawable.github
-            if(section ==  SocialLink.FB){
-                icon  = Res.drawable.facebook
-            }else if (section ==  SocialLink.Linkedlin){
-                icon  = Res.drawable.linkedin
+            if (section == SocialLink.FB) {
+                icon = Res.drawable.facebook
+            } else if (section == SocialLink.Linkedlin) {
+                icon = Res.drawable.linkedin
             }
 
 
@@ -361,8 +442,8 @@ fun IconListContainer() {
                 contentDescription = " Icon",
                 Modifier.padding(bottom = 0.sdp).size(targetSize)
                     .clickable {
-                    openLink(section.url)
-                }.hoverable(interactionSource),
+                        openLink(section.url)
+                    }.hoverable(interactionSource),
                 colorFilter = ColorFilter
                     .tint(color = LightSlate)
             )
@@ -438,4 +519,16 @@ fun ScrollItem(name: String = " ", modifier: Modifier, firstVisibleItemIndex: In
 @Composable
 fun AppPreview() {
     App()
+}
+
+
+@Composable
+fun rememberWindowWidthDp(): Int {
+    val density = LocalDensity.current
+    val size = LocalWindowInfo.current.containerSize
+
+    return with(density) {
+        size.width.toDp().value.toInt()
+    }
+
 }

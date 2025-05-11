@@ -10,3 +10,10 @@ enum class SocialLink(val url: String) {
     Linkedlin("https://www.linkedin.com/in/rahat-shovo/"),
     FB("https://www.facebook.com/profile.php?id=100076692103324")
 }
+
+
+enum class WindowSize {
+    COMPACT,     // Mobile
+    MEDIUM,      // Tablet or narrow desktop
+    EXPANDED     // Full desktop / wide web
+}
