@@ -120,7 +120,7 @@ fun techStackItem(
         Text(
             text = text,
             color = Color(0xFF16E3D1), // Bright cyan/teal color
-            fontSize = 6.ssp,
+            fontSize = (4.5).ssp,
             fontWeight = FontWeight.Normal,
             fontFamily = SfMonoFontFamily()
         )

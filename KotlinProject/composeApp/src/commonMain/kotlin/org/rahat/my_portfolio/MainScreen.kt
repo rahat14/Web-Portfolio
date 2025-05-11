@@ -233,7 +233,7 @@ fun RightContainer(modifier: Modifier, scrollState: LazyListState, uiState: Deve
                     uiState.projects[it]
                 )
             }
-            Spacer(modifier = Modifier.height(8.sdp))
+
         }
 
     }

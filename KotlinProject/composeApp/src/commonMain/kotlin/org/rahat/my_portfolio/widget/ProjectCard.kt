@@ -2,6 +2,7 @@ package org.rahat.my_portfolio.widget
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -38,6 +39,7 @@ import network.chaintech.sdpcomposemultiplatform.sdp
 import network.chaintech.sdpcomposemultiplatform.ssp
 import org.jetbrains.compose.resources.painterResource
 import org.rahat.my_portfolio.data.Project
+import org.rahat.my_portfolio.openLink
 import org.rahat.my_portfolio.theme.Green
 import org.rahat.my_portfolio.theme.InterFontFamily
 import org.rahat.my_portfolio.theme.SfMonoFontFamily
@@ -69,19 +71,25 @@ fun ProjectCard(project: Project) {
 
 
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
+            .clickable {
+                openLink(project.link)
+            }
+            .hoverable(interactionSource),
         colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent
+            containerColor = if (isHovered) {
+                Color.White.copy(alpha = 0.05f)
+            } else Color.Transparent
         ),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 0.dp,
-            focusedElevation = 1.dp
+            focusedElevation = 0.dp
         )
     ) {
 
         Row(
             verticalAlignment = Alignment.Top,
-            modifier = Modifier
+            modifier = Modifier.padding(4.sdp)
         ) {
 
 
@@ -105,7 +113,7 @@ fun ProjectCard(project: Project) {
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.hoverable(interactionSource),
+                    modifier = Modifier,
                 ) {
                     Text(
                         project.name, style = TextStyle(
@@ -147,7 +155,7 @@ fun ProjectCard(project: Project) {
 
 
                 FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(4.sdp),
+                    horizontalArrangement = Arrangement.spacedBy(3.sdp),
                     modifier = Modifier.padding(vertical = 5.sdp),
                     verticalArrangement = Arrangement.spacedBy(2.sdp)
                 ) {
