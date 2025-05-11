@@ -73,7 +73,7 @@ fun ProjectCard(project: Project) {
     Card(
         modifier = Modifier.fillMaxWidth()
             .clickable {
-                openLink(project.link)
+                 openLink(project.link)
             }
             .hoverable(interactionSource),
         colors = CardDefaults.cardColors(

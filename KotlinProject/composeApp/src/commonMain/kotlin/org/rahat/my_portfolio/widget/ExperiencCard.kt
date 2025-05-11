@@ -63,22 +63,23 @@ fun ExperienceCard(experience: Experience) {
 
                 Text(
                     "${experience.position} • ${experience.company}", style = TextStyle(
-                        fontSize = 7.ssp,
+                        fontSize = (6.5).ssp,
                         fontWeight = FontWeight.Medium,
                         color = offWhite,
                         fontFamily = InterFontFamily()
                     )
                 )
 
-                Spacer(modifier = Modifier.size(4.sdp))
+                Spacer(modifier = Modifier.size(2.sdp))
 
                 Text(
                     experience.responsibilities, style = TextStyle(
-                        fontSize = 6.ssp,
+                        fontSize = (5.5).ssp,
                         fontWeight = FontWeight.Normal,
                         color = textColor,
-                        lineHeight = 8.ssp,
-                        fontFamily = InterFontFamily()
+                        fontFamily = InterFontFamily() ,
+                        lineHeight = 8.ssp
+
                     )
                 )
 
