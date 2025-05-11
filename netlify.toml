@@ -1,6 +1,6 @@
 [build]
   command = "gradle wasmJsBrowserProductionWebpack"
-  publish = "composeApp\build\kotlin-webpack\wasmJs\productionExecutable"
+  publish = "composeApp/build/kotlin-webpack/wasmJs/productionExecutable"
 
 [build.environment]
   GRADLE_VERSION = "8.5"
