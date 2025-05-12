@@ -6,7 +6,7 @@ var info = """
         {
           "company": "Programming Hero",
           "position": "Senior Engineer (Mobile)",
-          "duration": "April 2022 - PRESENT",
+          "duration": "April 22 - PRESENT",
           "responsibilities": "Attained 92% test coverage by writing well-designed, testable code. Built a cross-platform DRM-protected player to serve DRM-protected content. Led the conversion of a native codebase to Kotlin Multi-Platform, optimizing cross-platform functionality and resource efficiency.",
           "link": "https://www.programming-hero.com",
            "tech_stack": [
@@ -19,7 +19,7 @@ var info = """
         {
           "company": "Simec System",
           "position": "Software Engineer (Mobile)",
-          "duration": "Sept 2021 - April 2022",
+          "duration": "Sept 21 - April 22",
           "responsibilities": "Maintained clean application architecture, improving code quality and time to market by 2x. Added local caching layer at the client end, improving average response time from 45 seconds to 10 seconds. Implemented CI/CD to improve workflow.",
           "link": "https://www.simecsystem.com",
            "tech_stack": [
@@ -33,7 +33,7 @@ var info = """
         {
           "company": "AKR Technology (Contractual)",
           "position": "Consultant Software Engineer (Mobile)",
-          "duration": "May 2021 - Aug 2021",
+          "duration": "May 21 - Aug 21",
           "responsibilities": "Worked with the International Healthcare research team on a big data project. Customized existing applications and improved 4 features that facilitated 30,000 new users. Developed a new Android mobile application with 50,000 daily active users.",
           "link": "https://example.com/akr-tech",
            "tech_stack": [
@@ -44,7 +44,7 @@ var info = """
         {
           "company": "Spinner Tech",
           "position": "Android Developer",
-          "duration": "Aug 2020 - Sept 2021",
+          "duration": "Aug 20 - Sept 21",
           "responsibilities": "Developed a new Android mobile application with 1 million daily active users. Improved existing applications, increasing user retention rate by 30%.",
           "link": "https://example.com/spinner-tech",
            "tech_stack": [
@@ -55,7 +55,7 @@ var info = """
         {
           "company": "Metacoders",
           "position": "Android Developer",
-          "duration": "Jan 2018 - July 2020",
+          "duration": "Jan 18 - July 20",
           "responsibilities": "Designed and developed 3 Android applications. Executed deployment and delivery of 2 Android applications.",
           "link": "https://example.com/metacoders",
            "tech_stack": [

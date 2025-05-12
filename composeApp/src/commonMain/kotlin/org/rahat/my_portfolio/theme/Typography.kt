@@ -6,10 +6,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import kotlinproject.composeapp.generated.resources.Inter_18pt_Medium
 import kotlinproject.composeapp.generated.resources.Inter_18pt_Regular
-import kotlinproject.composeapp.generated.resources.Inter_18pt_SemiBold
 import kotlinproject.composeapp.generated.resources.Res
-import kotlinproject.composeapp.generated.resources.calibre_medium
-import kotlinproject.composeapp.generated.resources.calibre_semibold
 import kotlinproject.composeapp.generated.resources.sf_mono_medium
 import kotlinproject.composeapp.generated.resources.sf_mono_regular
 import kotlinproject.composeapp.generated.resources.sf_mono_semibold
@@ -22,24 +19,14 @@ fun InterFontFamily(): FontFamily {
     return FontFamily(
         fonts = listOf(
             Res.font.Inter_18pt_Medium.asFont(fontWeight = FontWeight.Medium),
-            Res.font.Inter_18pt_SemiBold.asFont(fontWeight = FontWeight.SemiBold),
+//            Res.font.Inter_18pt_SemiBold.asFont(fontWeight = FontWeight.SemiBold),
             Res.font.Inter_18pt_Regular.asFont(fontWeight = FontWeight.Normal),
-            Res.font.Inter_18pt_SemiBold.asFont(fontWeight = FontWeight.Bold),
+            Res.font.Inter_18pt_Medium.asFont(fontWeight = FontWeight.Bold),
         )
     )
 }
 
 
-
-@Composable
-fun CalibreFontFamily(): FontFamily {
-    return FontFamily(
-        fonts = listOf(
-            Res.font.calibre_medium.asFont(fontWeight = FontWeight.Medium),
-            Res.font.calibre_semibold.asFont(fontWeight = FontWeight.SemiBold),
-        )
-    )
-}
 
 @Composable
 fun SfMonoFontFamily(): FontFamily {

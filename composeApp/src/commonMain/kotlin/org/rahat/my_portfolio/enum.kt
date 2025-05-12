@@ -8,7 +8,7 @@ enum class Section(val label: String) {
 enum class SocialLink(val url: String) {
     Github("https://github.com/rahat14"),
     Linkedlin("https://www.linkedin.com/in/rahat-shovo/"),
-    FB("https://www.facebook.com/profile.php?id=100076692103324")
+    Facebook("https://www.facebook.com/profile.php?id=100076692103324")
 }
 
 

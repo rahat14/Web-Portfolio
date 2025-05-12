@@ -1,5 +1,6 @@
 package org.rahat.my_portfolio.widget
 
+import WindowSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,7 +32,7 @@ import org.rahat.my_portfolio.theme.offWhite
 import org.rahat.my_portfolio.theme.textColor
 
 @Composable
-fun ExperienceCard(experience: Experience) {
+fun ExperienceCard(experience: Experience , windowSize: WindowSize) {
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -50,21 +51,21 @@ fun ExperienceCard(experience: Experience) {
         ) {
             Text(
                 experience.duration, style = TextStyle(
-                    fontSize = 5.ssp,
+                    fontSize = if(windowSize == WindowSize.COMPACT){5.5.ssp}else { (5).ssp},
                     fontWeight = FontWeight.Medium,
                     color = textColor,
                     fontFamily = InterFontFamily()
                 ),
-                modifier = Modifier.width(60.sdp).padding(top = 1.sdp)
+                modifier = Modifier.width(65.sdp).padding(top = 1.sdp , start = 2.sdp)
             )
 
-            Spacer(modifier = Modifier.size(12.sdp))
+            Spacer(modifier = Modifier.size(if(windowSize == WindowSize.COMPACT){8.sdp}else 12.sdp))
 
             Column {
 
                 Text(
                     "${experience.position} • ${experience.company}", style = TextStyle(
-                        fontSize = (6.5).ssp,
+                        fontSize = if(windowSize == WindowSize.COMPACT){7.ssp}else { (6.5).ssp},
                         fontWeight = FontWeight.Medium,
                         color = offWhite,
                         fontFamily = InterFontFamily()
@@ -75,7 +76,7 @@ fun ExperienceCard(experience: Experience) {
 
                 Text(
                     experience.responsibilities, style = TextStyle(
-                        fontSize = (5.5).ssp,
+                        fontSize = if(windowSize == WindowSize.COMPACT){7.ssp}else { 6.ssp},
                         fontWeight = FontWeight.Normal,
                         color = textColor,
                         fontFamily = InterFontFamily() ,
@@ -92,7 +93,7 @@ fun ExperienceCard(experience: Experience) {
                     modifier = Modifier.padding(vertical = 5.sdp)
                 ) {
                     for (item in experience.tech_stack) {
-                        techStackItem(text = item)
+                        techStackItem(text = item , windowSize = windowSize)
                     }
                 }
 
@@ -109,23 +110,23 @@ fun ExperienceCard(experience: Experience) {
 @Composable
 fun techStackItem(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier ,
+    windowSize: WindowSize
 ) {
     Box(
         modifier = modifier
             .background(
                 color = Color(0xFF0A2239), // Dark background like the image
                 shape = RoundedCornerShape(50)
-            ).padding(horizontal = 5.sdp, vertical = 2.sdp),
+            ).padding(horizontal = 5.sdp, vertical = if (windowSize != WindowSize.COMPACT){2.sdp}else {1.sdp}),
         contentAlignment = Alignment.Center
 
     ) {
         Text(
             text = text,
             color = Color(0xFF16E3D1), // Bright cyan/teal color
-            fontSize = (4.5).ssp,
+            fontSize = if(windowSize == WindowSize.COMPACT){5.ssp}else { (4.5).ssp},
             fontWeight = FontWeight.Normal,
-            fontFamily = SfMonoFontFamily()
         )
     }
 }

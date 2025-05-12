@@ -1,5 +1,6 @@
 package org.rahat.my_portfolio.widget
 
+import WindowSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -48,7 +49,7 @@ import org.rahat.my_portfolio.theme.offWhite
 import org.rahat.my_portfolio.theme.textColor
 
 @Composable
-fun ProjectCard(project: Project) {
+fun ProjectCard(project: Project, windowSize: WindowSize) {
 
     val interactionSource = remember { MutableInteractionSource() }
     val isHovered by interactionSource.collectIsHoveredAsState()
@@ -97,8 +98,6 @@ fun ProjectCard(project: Project) {
             val painterResource = asyncPainterResource(data = project.image.toString())
 
 
-
-
             KamelImage(
                 { painterResource }, contentDescription = " Icon",
                 modifier = Modifier
@@ -125,7 +124,7 @@ fun ProjectCard(project: Project) {
                 ) {
                     Text(
                         project.name, style = TextStyle(
-                            fontSize = 6.ssp,
+                            fontSize = if(windowSize == WindowSize.COMPACT){7.ssp}else { 6.ssp},
                             fontWeight = FontWeight.Bold,
                             color = if (isHovered) Green else offWhite,
                             fontFamily = SfMonoFontFamily()
@@ -149,11 +148,11 @@ fun ProjectCard(project: Project) {
 
                 }
 
-                Spacer(modifier = Modifier.size(1.sdp))
+                Spacer(modifier = Modifier.size(3.sdp))
 
                 Text(
                     project.description, style = TextStyle(
-                        fontSize = 6.ssp,
+                        fontSize = if(windowSize == WindowSize.COMPACT){7.ssp}else { 6.ssp},
                         fontWeight = FontWeight.Normal,
                         color = textColor,
                         fontFamily = InterFontFamily()
@@ -169,7 +168,7 @@ fun ProjectCard(project: Project) {
                 ) {
                     for (item in project.tech_stack) {
 
-                        techStackItem(text = item)
+                        techStackItem(text = item , windowSize = windowSize)
                     }
                 }
 

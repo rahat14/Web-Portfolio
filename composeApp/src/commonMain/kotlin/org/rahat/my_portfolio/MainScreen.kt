@@ -4,8 +4,10 @@ import Section
 import SocialLink
 import WindowSize
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.animateScrollBy
 import androidx.compose.foundation.hoverable
@@ -26,8 +28,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +36,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.input.pointer.pointerInput
@@ -44,12 +47,10 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import kotlinproject.composeapp.generated.resources.Res
 import kotlinproject.composeapp.generated.resources.horizontral_line
-import kotlinproject.composeapp.generated.resources.linkedin_brands
-import kotlinproject.composeapp.generated.resources.square_facebook_brands
-import kotlinproject.composeapp.generated.resources.square_github_brands
 import kotlinx.coroutines.launch
 import network.chaintech.sdpcomposemultiplatform.sdp
 import network.chaintech.sdpcomposemultiplatform.ssp
@@ -58,7 +59,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.rahat.my_portfolio.data.DeveloperProfile
 import org.rahat.my_portfolio.repo.ProfileRepository
 import org.rahat.my_portfolio.theme.InterFontFamily
-import org.rahat.my_portfolio.theme.LightSlate
 import org.rahat.my_portfolio.theme.Navy
 import org.rahat.my_portfolio.theme.SfMonoFontFamily
 import org.rahat.my_portfolio.theme.offWhite
@@ -86,7 +86,7 @@ fun MainScreen(vm: ProfileViewModel = ProfileViewModel(repository = ProfileRepos
 
                 if (scrollDelta != 0f) {
                     scope.launch {
-                        scrollState.animateScrollBy((scrollDelta * 2f)) // 250f
+                        scrollState.animateScrollBy((scrollDelta * 2.5f)) // 250f
                     }
                 }
             }
@@ -101,42 +101,8 @@ fun MainScreen(vm: ProfileViewModel = ProfileViewModel(repository = ProfileRepos
         when (windowSize) {
             WindowSize.COMPACT -> {
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.sdp).verticalScroll(
-                        rememberScrollState()
-                    )
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 24.sdp)
                 ) {
-
-
-                    LeftContainer(
-                        modifier = Modifier,
-                        onScrollTap = { section ->
-                            when (section) {
-                                Section.Experience -> {
-                                    scope.launch {
-                                        scrollState.animateScrollToItem(3)
-                                    }
-
-                                }
-
-                                Section.Projects -> {
-                                    scope.launch {
-                                        scrollState.animateScrollToItem(8)
-                                    }
-                                }
-
-                                else -> {
-                                    scope.launch {
-                                        scrollState.animateScrollToItem(0)
-                                    }
-                                }
-                            }
-                        },
-                        firstVisibleItemIndex,
-                        uiState,
-                        windowSize
-                    )
-
-
 
                     RightContainer(modifier = Modifier, scrollState, uiState, windowSize)
 
@@ -145,11 +111,13 @@ fun MainScreen(vm: ProfileViewModel = ProfileViewModel(repository = ProfileRepos
             }
 
             else -> {
-                Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 24.sdp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(horizontal = 24.sdp)
+                ) {
 
 
                     LeftContainer(
-                        modifier = Modifier.weight(1f).then(scrollListenerModifier),
+                        modifier = Modifier.fillMaxHeight().weight(1f).then(scrollListenerModifier),
                         onScrollTap = { section ->
                             when (section) {
                                 Section.Experience -> {
@@ -210,6 +178,7 @@ fun RightContainer(
     windowSize: WindowSize
 ) {
 
+
     val density = LocalDensity.current
     val size = LocalWindowInfo.current.containerSize
 
@@ -221,12 +190,24 @@ fun RightContainer(
         Modifier
     } else {
 
-        Modifier.height(height = (height * 0.80).dp)
+        Modifier
     }
 
     LazyColumn(
         modifier = modifier.then(sizeModifier), state = scrollState,
     ) {
+
+        if (windowSize == WindowSize.COMPACT) {
+            item {
+                LeftContainer(
+                    modifier = Modifier,
+                    onScrollTap = { },
+                    0,
+                    uiState,
+                    windowSize
+                )
+            }
+        }
 
         item {
             Spacer(modifier = Modifier.size(28.sdp))
@@ -249,7 +230,12 @@ fun RightContainer(
 
             Text(
                 text = longText, color = textColor, style = TextStyle(
-                    fontSize = (5.8).ssp,
+                    fontSize = if (windowSize == WindowSize.COMPACT) {
+                        (7).ssp
+                    } else {
+                        (6).ssp
+                    },
+
                     fontWeight = FontWeight.Normal,
                     fontFamily = InterFontFamily()
                 )
@@ -262,7 +248,7 @@ fun RightContainer(
 
         items(uiState?.experience?.size ?: 0) {
             if (uiState != null) {
-                ExperienceCard(uiState.experience[it])
+                ExperienceCard(uiState.experience[it], windowSize)
             }
             Spacer(modifier = Modifier.height(8.sdp))
         }
@@ -307,14 +293,40 @@ fun RightContainer(
         items(uiState?.projects?.size ?: 0) {
             if (uiState != null) {
                 ProjectCard(
-                    uiState.projects[it]
+                    uiState.projects[it], windowSize
                 )
             }
 
         }
 
+        item {
+            Spacer(modifier = Modifier.height(8.sdp))
+            Footer()
+            Spacer(modifier = Modifier.height(8.sdp))
+        }
+
     }
 
+}
+
+@Composable
+fun Footer() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth() // Dark background
+            .padding(vertical = 24.dp, horizontal = 16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "Made with ❤ by Rahat With Compose Multi-Platform",
+                color = Color(0xFFB0BEC5),
+                fontSize = 6.ssp,
+                fontWeight = FontWeight.Medium,
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+        }
+    }
 }
 
 @Composable
@@ -362,7 +374,7 @@ fun LeftContainer(
             modifier = Modifier
         )
 
-        IconListContainer()
+        //IconListContainer()
 
         Spacer(Modifier.height(5.sdp))
 
@@ -375,11 +387,12 @@ fun LeftContainer(
             lineHeight = 8.ssp
         )
 
-        Spacer(Modifier.height(50.sdp))
-
+        Spacer(Modifier.height(15.sdp))
 
 
         if (windowSize != WindowSize.COMPACT) {
+
+            Spacer(Modifier.height(25.sdp))
             Section.entries.forEach { section ->
 
                 ScrollItem(
@@ -395,15 +408,15 @@ fun LeftContainer(
 
             }
 
-           Spacer(Modifier.weight(1f))
+            Spacer(Modifier.weight(1f))
         }
 
-
-        IconListContainer()
-
+        IconListContainer(windowSize)
 
         if (windowSize != WindowSize.COMPACT) {
-            Spacer(Modifier.weight(0.1f))
+            Spacer(Modifier.weight(1f))
+        } else {
+            Spacer(Modifier.height(10.sdp))
         }
 
 
@@ -412,11 +425,37 @@ fun LeftContainer(
 }
 
 @Composable
-fun IconListContainer() {
+fun HoverEffectButton(title: String, textSize: TextUnit, onClick: () -> Unit) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isHovered by interactionSource.collectIsHoveredAsState()
+
+    Box(
+        modifier = Modifier
+            .shadow(if (isHovered) 4.sdp else 0.dp, RoundedCornerShape(50))
+            .hoverable(interactionSource)
+            .clip(RoundedCornerShape(50))
+            .border(BorderStroke(0.25.sdp, Color.White), shape = RoundedCornerShape(50))
+            .background(if (isHovered) Color.White else Color.Transparent)
+            .clickable(
+                onClick = onClick
+            ), // add padding to resemble a button
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = title,
+            fontSize = textSize,
+            color = if (isHovered) Color.Black else textColor,
+            modifier = Modifier.padding(horizontal = 8.sdp, vertical = 2.sdp)
+        )
+    }
+}
+
+@Composable
+fun IconListContainer(windowSize: WindowSize) {
 
 
     Row(
-        horizontalArrangement = Arrangement.spacedBy(6.sdp),
+        horizontalArrangement = Arrangement.spacedBy(3.sdp),
         modifier = Modifier.height(20.sdp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -431,25 +470,39 @@ fun IconListContainer() {
             val targetSize = if (isHovered) hoveredSize else normalSize
 
 
-            var icon = Res.drawable.square_github_brands
-            if (section == SocialLink.FB) {
-                icon = Res.drawable.square_facebook_brands
-            } else if (section == SocialLink.Linkedlin) {
-                icon = Res.drawable.linkedin_brands
+//            var icon =
+//                "https://github.com/rahat14/Web-Portfolio/blob/main/composeApp/src/commonMain/composeResources/drawable/square_github_brands.png?raw=true"
+//            if (section == SocialLink.Facebook) {
+//                icon =
+//                    "https://github.com/rahat14/Web-Portfolio/blob/main/composeApp/src/commonMain/composeResources/drawable/square-facebook-brands.png?raw=true"
+//            } else if (section == SocialLink.Linkedlin) {
+//                icon =
+//                    "https://github.com/rahat14/Web-Portfolio/blob/main/composeApp/src/commonMain/composeResources/drawable/linkedin-brands.png?raw=true"
+//            }
+
+            HoverEffectButton(
+                title = section.name, textSize =
+
+                    if (windowSize == WindowSize.COMPACT) {
+                        7.ssp
+                    } else 4.5.ssp
+
+            ) {
+                openLink(section.url)
             }
 
 
-            Image(
-                painter = painterResource(icon),
-                contentDescription = "",
-                Modifier.padding(bottom = 0.sdp).size(targetSize)
-                    .clickable {
-                        openLink(section.url)
-                    }
-                    .hoverable(interactionSource),
-                colorFilter = ColorFilter
-                    .tint(color = if(isHovered){Color.White}else {LightSlate})
-            )
+//            KamelImage(
+//                { asyncPainterResource(icon)},
+//                contentDescription = "",
+//                Modifier.padding(bottom = 0.sdp).size(targetSize)
+//                    .clickable {
+//
+//                    }
+//                    .hoverable(interactionSource),
+//                colorFilter = ColorFilter
+//                    .tint(color = if(isHovered){Color.White}else {LightSlate})
+//            )
 
         }
 
@@ -470,7 +523,7 @@ fun ScrollItem(name: String = " ", modifier: Modifier, firstVisibleItemIndex: In
     val overrideHover = if (firstVisibleItemIndex == 0 && name == Section.About.label) {
         true
     } else if (
-        firstVisibleItemIndex < 6 && name == Section.Experience.label && firstVisibleItemIndex != 0
+        firstVisibleItemIndex <= 5 && name == Section.Experience.label && firstVisibleItemIndex != 0
     ) {
         true
     } else if (firstVisibleItemIndex >= 6 && name == Section.Projects.label) {
