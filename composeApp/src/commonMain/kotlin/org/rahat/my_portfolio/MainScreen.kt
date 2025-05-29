@@ -86,7 +86,7 @@ fun MainScreen(vm: ProfileViewModel = ProfileViewModel(repository = ProfileRepos
 
                 if (scrollDelta != 0f) {
                     scope.launch {
-                        scrollState.animateScrollBy((scrollDelta * 2.5f)) // 250f
+                        scrollState.animateScrollBy((scrollDelta * 3.5f)) // 250f
                     }
                 }
             }
